@@ -1,5 +1,5 @@
 # Final-Project-CS155
-                                          This Little car animation Runs on LC-3 Version 2.0.2
+This Little car animation Runs on LC-3 Version 2.0.2
 
 The program shows a car swerving back and forth on a road, and then crashing into a rock barrier.
 
