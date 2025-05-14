@@ -13,7 +13,7 @@
 reset  
 
     AND R4,R4,#0
-    ADD R4,R4,#1 ;controls how many big loops go 
+    ADD R4,R4,#4 ;controls how many big loops go 
 MainLoop
     AND R3,R3,#0 
     AND R1,R1,#0 ; resets which car i am calling
@@ -127,7 +127,7 @@ PauseLoop     ;iterates pauseCount amount of times
     RET
     
 PauseSaveR1 .blkw 1
-PauseCount .fill x3000
+PauseCount .fill x4500
 ;*****************************Clear******************************
 ;R0 holds address of a clearing page
 ;R7 holds return address
@@ -277,7 +277,7 @@ PrintEndScreen
     RET
     endScreenSaveR7 .blkw 1
 
-EndScreen .stringz "\n                      Apparently rocks are hard to drive through...\n\n                    Cars might fail you, and you might die, but I shall not...                      |           \n                       ;           \n                       / \          \n                       |   |         \n               ||       /   \       ||\n                ||_      |   |      _||\n                 |  \__   |   |   __/  |\n                  |     \==|   |==/     |\n                   |__    __     __    __|\n                    .  \__  o     o  __/  .\n                     |     \___/ \___/     |\n                      |   __/  ||_||  \__   |\n                       |_/       `=`       \_|\n"
+EndScreen .stringz "\n                      Apparently rocks are hard to drive through...\n\n                  ";  Cars might fail you, and you might die, but I shall not...          " ;             |           \n                       ;           \n                       / \          \n                       |   |         \n               ||       /   \       ||\n                ||_      |   |      _||\n                 |  \__   |   |   __/  |\n                  |     \==|   |==/     |\n                   |__    __     __    __|\n                    .  \__  o     o  __/  .\n                     |     \___/ \___/     |\n                      |   __/  ||_||  \__   |\n                       |_/       `=`       \_|\n"
 
 ;*************************getCrash*********************************
 ;R0 holds the address of the rocks to crash into
