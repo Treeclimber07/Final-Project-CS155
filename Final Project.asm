@@ -11,35 +11,22 @@
 .orig x3000
 
 reset  
-    ; AND R3,R3,#0
-    ; ADD R3,R3,#4 ; the number i will modulo by "%4"
-    ; AND R1,R1,#0
+
     AND R4,R4,#0
     ADD R4,R4,#3 ;controls how many big loops go 
 MainLoop
     AND R3,R3,#0
-    LD R2,roadLoopStart ;just before the loop starts i am using R2 to load the start position for the loop
-    ADD R3,R3,R2 ;keeps track of the loop count for road printing
+    ; LD R2,roadLoopStart ;just before the loop starts i am using R2 to load the start position for the loop
+    ; ADD R3,R3,R2 ;keeps track of the loop count for road printing
     AND R1,R1,#0 ; resets which car i am calling
     
     JSR Clear
+    ADD R3,R3,#3
     JSR roadLoopF ;prints the beginning roads
     ADD R1,R1,#1 ;will set up cc for getting the upCar, will be set to negative to get the downCar
     JSR getCar ;grabs the car because its too far away
     JSR PrintFunction ;print the road with the car on it
-    ADD R3,R3,#15
-    ADD R3,R3,#9
-    JSR roadLoopF
-    JSR Pause
-    JSR Clear
-    
-    ADD R3,R3,#-15
-    ADD R3,R3,#-4
-    JSR roadLoopF
-    ADD R1,R1,#1 ;will set up cc for getting the upCar, will be set to negative to get the downCar
-    JSR getCar ;grabs the car because its too far away
-    JSR PrintFunction
-    ADD R3,R3,#14
+    ADD R3,R3,#13
     JSR roadLoopF
     JSR Pause
     JSR Clear
@@ -49,53 +36,41 @@ MainLoop
     ADD R1,R1,#1 ;will set up cc for getting the upCar, will be set to negative to get the downCar
     JSR getCar ;grabs the car because its too far away
     JSR PrintFunction
-    ADD R3,R3,#4
+    ADD R3,R3,#5
     JSR roadLoopF
     JSR Pause
     JSR Clear
     
-    ADD R3,R3,#1
-    JSR roadLoopF
-    ADD R1,R1,#-1 ;will set up cc for getting the upCar, will be set to negative to get the downCar
-    JSR getCar ;grabs the car because its too far away
-    JSR PrintFunction
-    ADD R3,R3,#-6
-    JSR roadLoopF
-    JSR Pause
-    JSR Clear
-    
-    ADD R3,R3,#11
-    JSR roadLoopF
-    ADD R1,R1,#-1 ;will set up cc for getting the upCar, will be set to negative to get the downCar
-    JSR getCar ;grabs the car because its too far away
-    JSR PrintFunction
-    ADD R3,R3,#-16
-    JSR roadLoopF
-    JSR Pause
-    JSR Clear
-    
-    ADD R3,R3,#15
-    ADD R3,R3,#6
+    ADD R3,R3,#-1
     JSR roadLoopF
     ADD R1,R1,#1 ;will set up cc for getting the upCar, will be set to negative to get the downCar
     JSR getCar ;grabs the car because its too far away
     JSR PrintFunction
-    ADD R3,R3,#-16
-    ADD R3,R3,#-10
+    ADD R3,R3,#-3
+    JSR roadLoopF
+    JSR Pause
+    JSR Clear
+    
+    ADD R3,R3,#7
+    JSR roadLoopF
+    ADD R1,R1,#-1 ;will set up cc for getting the upCar, will be set to negative to get the downCar
+    JSR getCar ;grabs the car because its too far away
+    JSR PrintFunction
+    ADD R3,R3,#-11
     JSR roadLoopF
     JSR Pause
     JSR Clear
     
     ADD R3,R3,#15
-    ADD R3,R3,#15
     JSR roadLoopF
-    ADD R1,R1,#1 ;will set up cc for getting the upCar, will be set to negative to get the downCar
+    ADD R1,R1,#-1 ;will set up cc for getting the upCar, will be set to negative to get the downCar
     JSR getCar ;grabs the car because its too far away
     JSR PrintFunction
     ADD R3,R3,#-16
-    ADD R3,R3,#-16
+    ADD R3,R3,#-3
     JSR roadLoopF
     JSR Pause
+    JSR Clear
     
     ADD R4,R4,#-1
     BRnz finishScene ;will jump to the end scene after 3 iterations
@@ -108,7 +83,7 @@ finishScene
 finish    Halt
 mainSaveR7 .BLKW 1
 roadLoopStart .fill #3
-roadLoopHelper .fill #20
+
 
 ;**************************PrintFunction*********************************
 ;R7 saved for return value
@@ -155,7 +130,7 @@ PauseLoop
     RET
     
 PauseSaveR1 .blkw 1
-PauseCount .fill x4000
+PauseCount .fill x3000
 ;*****************************Clear******************************
 ;R0 holds address of a clearing page
 ;R7 holds return address
@@ -167,7 +142,7 @@ Clear
     ST R0,ClearSaveR0
     LD R7,ClearSaveR7
     RET
-clearRoad .stringz "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+clearRoad .stringz "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 ClearSaveR7 .blkw 1
 ClearSaveR0 .blkw 1
 
@@ -201,28 +176,6 @@ returnCar
 getCarSaveR1 .BLKW 1    
 getCarSaveR7 .BLKW 1
 
-; upCar1 .stringz "|    _               |\n|  {`-`{             | \n|  (==(|             | \n|  { _ {             | \n|  _/_\_             | \n"
-;up car looks like this:
-;|    _            |
-;|  {`-`{          |
-;|  (==(|          |
-;|  { _ {          |
-;|  _/_\_          |
-; upCar2 .stringz "|        _           |\n|      {`-`{         | \n|      (==(|         | \n|      { _ {         | \n|      _/_\_         | \n"
-;up car looks like this:
-;|      _          |
-;|    {`-`{        |
-;|    (==(|        |
-;|    { _ {        |
-;|    _/_\_        |
-; upCar3 .stringz "|            _       |\n|          {`-`{     | \n|          (==(|     | \n|          { _ {     | \n|          _/_\_     | \n"
-;up car looks like this: 
-;|        _        |
-;|      {`-`{      |
-;|      (==(|      |
-;|      { _ {      |
-;|      _/_\_      |
-
 
 bigCar1 .stringz "   |  ______________             |\n   |  \_____________\            |\n   |    __\\__//__                |\n   |    |        | '\            |\n   |    |________|   /=\         |\n   |   /_______ / \ |   |        |\n   |  |        |  .\ \=/         |\n   |  |        |___| |           |\n   |  | _______|  .| |           |\n   |   \ _______\  | |           |\n   |    |         |  /=\         |\n   |    |         | |   |        |\n   |     \_o____o_\ _\=/         |\n"
 ;   |    ______________           |
@@ -247,6 +200,9 @@ bigCar1 .stringz "   |  ______________             |\n   |  \_____________\     
 ;R7 holds return values
 toEndScreen
     ST R7, toEndSaveR7
+    ST R3, toEndSaveR3
+    ST R0, toEndSaveR0
+    
     JSR Clear
     JSR printEndScreen
     AND R3,R3,#0
@@ -257,12 +213,17 @@ toEndScreen
     JSR PrintFunction ;prints the rocks for the car to hit.
     AND R0,R0,#0
     ADD R0,R1,#0 ;loads the end screen that was saved in R1 into R0 to be printed
-    JSR PrintFunction
+    JSR PrintFunction ;print the end screen with the dragonfly guy
+    
+    LD R0,toEndSaveR0
+    LD R3,toEndSaveR3
     LD R7,toEndSaveR7
     RET
 toEndSaveR7 .blkw 1
+toEndSaveR3 .blkw 1
+toEndSaveR0 .blkw 1
 
-;**************************Car2*********************************
+;**************************getCar2*********************************
 ;R0 loads the car into R0 to display back in main
 ;R1 used to ensure that i have the correct car from mains interaction with R1
 ;R7 saved for return value
@@ -284,7 +245,7 @@ bigCar2 .stringz "   |     ______________          |\n   |     \_____________\  
 ;   |      |         | |   |      |
 ;   |       \_o____o_\ _\=/       |
 
-;**************************Car3*********************************
+;**************************getCar3*********************************
 ;R0 loads the car into R0 to display back in main
 ;R1 used to ensure that i have the correct car from mains interaction with R1
 ;R7 saved for return value
@@ -319,14 +280,14 @@ PrintEndScreen
     RET
     endScreenSaveR7 .blkw 1
 
-EndScreen .stringz "\nCars die, but I do not... Death comes for you all\n\n\n                     |           \n                     ;           \n                    / \          \n                   |   |         \n          ||       /   \       ||\n          ||_      |   |      _||\n          |  \__   |   |   __/  |\n          |     \==|   |==/     |\n          |__    __     __    __|\n          .  \__  o     o  __/  .\n          |     \___/ \___/     |\n          |   __/  ||_||  \__   |\n          |_/       `=`       \_|\n"
+EndScreen .stringz "\n\n\n\n                      Apparently rocks are hard to drive through...\n\n\n\n\n\n\n\n\n                    Cars might fail you, and you might die, but I shall not...\n\n\n                      |           \n                       ;           \n                       / \          \n                       |   |         \n               ||       /   \       ||\n                ||_      |   |      _||\n                 |  \__   |   |   __/  |\n                  |     \==|   |==/     |\n                   |__    __     __    __|\n                    .  \__  o     o  __/  .\n                     |     \___/ \___/     |\n                      |   __/  ||_||  \__   |\n                       |_/       `=`       \_|\n"
 
 ;*************************getCrash*********************************
 ;R0 holds the address of the rocks to crash into
 getCrash
     LEA R0, carCrash
     RET
-carCrash .stringz "   |    ______________           |\n   |    \_____________\          |\n   |       __\\__//__             |\n   |      |        | '\          |\n   |      |________|   /=\       |\n   |     /_______ / \ |   |      |\n   |    |        |  .\ \=/       |\n   |    | _______|  /\| |        |\n   |    /\ ___/ __\ /\ |         |\n   |   |   \_   / \ |  /=\___    |\n     _/       \/   |   __/    \   \n    /               \ /         | \n   |                 \           \\n"
+carCrash .stringz "   |    ______________           |\n   |    \_____________\          |\n   |       __\\__//__             |\n   |      |        | '\          |\n   |      |________|   /=\       |\n   |     /_______ / \ |   |      |\n   |    |        |  .\ \=/       |\n   |    | _______|  /\| |        |\n   |    /\ ___/ __\ /\ |         |\n   |   |   \_   / \ |  /=\___    |\n     _/       \/   |   __/    \   \n    /               \ /         | \n   |                 \           \\"
 ;carCrash .stringz "     /\_      _                \n    |   \_   / \       ___     \n  _/       \/   |   __/    \   \n /               \ /         | \n|                 \           \\"
 
 ;this is pile of rocks that car hits
@@ -361,51 +322,6 @@ carCrash .stringz "   |    ______________           |\n   |    \_____________\  
 ;|_/       `=`       \_|
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-; ;|          {`-`{  |
-; ;|          (==(|  |
-; ;|          { _ {  |
-; ;|          _/_\_  |
-
-
-
-
-
-; ; downCar .Stringz "|           _____ |\n|            \_/  |\n|           {   { |\n|           (==(| |\n|           {.,.{ |\n"
-; ;down car looks like this:
-; ;|           _____ |
-; ;|            \_/  |
-; ;|           {   { |
-; ;|           (==(| |
-; ;|           {.,.{ |
-
-
 .end
 
-;***********************************************************
-;
-;
-;R0
-;R1
-;R2
-;R3
-;R4
-;R5
-;R6
-;R7
+
