@@ -13,7 +13,7 @@
 reset  
 
     AND R4,R4,#0
-    ADD R4,R4,#3 ;controls how many big loops go 
+    ADD R4,R4,#1 ;controls how many big loops go 
 MainLoop
     AND R3,R3,#0 
     AND R1,R1,#0 ; resets which car i am calling
@@ -29,43 +29,43 @@ MainLoop
     JSR Pause
     JSR Clear
     
-    ADD R3,R3,#-9
+    ADD R3,R3,#-9 ;reposition car
     JSR roadLoopF
     ADD R1,R1,#1 ;will set up cc for getting the upCar, will be set to negative to get the downCar
     JSR getCar ;grabs the car because its too far away
     JSR PrintFunction
-    ADD R3,R3,#5
+    ADD R3,R3,#5 ;reposition car
     JSR roadLoopF
     JSR Pause
     JSR Clear
     
-    ADD R3,R3,#-1
+    ADD R3,R3,#-1 ;reposition car
     JSR roadLoopF
     ADD R1,R1,#1 ;will set up cc for getting the upCar, will be set to negative to get the downCar
     JSR getCar ;grabs the car because its too far away
     JSR PrintFunction
-    ADD R3,R3,#-3
+    ADD R3,R3,#-3 ;reposition car
     JSR roadLoopF
     JSR Pause
     JSR Clear
     
-    ADD R3,R3,#7
+    ADD R3,R3,#7 ;reposition car
     JSR roadLoopF
     ADD R1,R1,#-1 ;will set up cc for getting the upCar, will be set to negative to get the downCar
     JSR getCar ;grabs the car because its too far away
     JSR PrintFunction
-    ADD R3,R3,#-11
-    JSR roadLoopF
+    ADD R3,R3,#-11 ;reposition car
+    JSR roadLoopF 
     JSR Pause
     JSR Clear
     
-    ADD R3,R3,#15
+    ADD R3,R3,#15 ;reposition car
     JSR roadLoopF
     ADD R1,R1,#-1 ;will set up cc for getting the upCar, will be set to negative to get the downCar
     JSR getCar ;grabs the car because its too far away
     JSR PrintFunction
-    ADD R3,R3,#-16
-    ADD R3,R3,#-3
+    ADD R3,R3,#-16 ;reposition car
+    ADD R3,R3,#-3 ;reposition car
     JSR roadLoopF
     JSR Pause
     JSR Clear
@@ -98,12 +98,12 @@ roadLoopF
     ST R0,roadLoopSaveR0
     ST R3,roadLoopSaveR3
     ST R7,roadLoopSaveR7
-    ADD R3,R3,#0
+    ADD R3,R3,#0 ;double check we are using R3 correctly
     BRz returnFromRoadLoop
 roadLoop
     LEA R0,road
     JSR PrintFunction
-    ADD R3,R3,#-1
+    ADD R3,R3,#-1 ;iterate through however many road loops we need
     BRp roadLoop
 returnFromRoadLoop    
     LD R0,roadLoopSaveR0
@@ -119,7 +119,7 @@ road .stringz "   |                             |\n"
 Pause
     ST R1,PauseSaveR1
     LD R1,PauseCount
-PauseLoop    
+PauseLoop     ;iterates pauseCount amount of times
     ADD R1,R1,#-1
     BRp PauseLoop
     
@@ -134,7 +134,7 @@ PauseCount .fill x3000
 Clear
     ST R0,ClearSaveR0
     ST R7,ClearSaveR7
-    LEA R0,clearRoad
+    LEA R0,clearRoad ;load the clearing of the console
     TRAP x22
     ST R0,ClearSaveR0
     LD R7,ClearSaveR7
@@ -150,14 +150,14 @@ ClearSaveR0 .blkw 1
 getCar
     ST R1,getCarSaveR1
     ST R7,getCarSaveR7
-    ADD R1,R1,#-1
+    ADD R1,R1,#-1 ;go through and check which car we need in main
     BRz Car1
     ADD R1,R1,#-1
     BRz Car2
     ADD R1,R1,#-1
     BRz Car3
 Car3   
-    JSR getCar3 
+    JSR getCar3 ;the string was too far away so i made subroutines to grab them
     BR returnCar    
 Car2    
     JSR getCar2 
@@ -202,7 +202,7 @@ toEndScreen
     
     JSR Clear
     JSR printEndScreen
-    AND R3,R3,#0
+    AND R3,R3,#0  ;reset how many roads will be printed
     ADD R3,R3,#15
     ADD R3,R3,#15
     JSR roadLoopF
@@ -277,7 +277,7 @@ PrintEndScreen
     RET
     endScreenSaveR7 .blkw 1
 
-EndScreen .stringz "\n\n\n\n                      Apparently rocks are hard to drive through...\n\n\n\n\n\n\n\n\n                    Cars might fail you, and you might die, but I shall not...\n\n\n                      |           \n                       ;           \n                       / \          \n                       |   |         \n               ||       /   \       ||\n                ||_      |   |      _||\n                 |  \__   |   |   __/  |\n                  |     \==|   |==/     |\n                   |__    __     __    __|\n                    .  \__  o     o  __/  .\n                     |     \___/ \___/     |\n                      |   __/  ||_||  \__   |\n                       |_/       `=`       \_|\n"
+EndScreen .stringz "\n                      Apparently rocks are hard to drive through...\n\n                    Cars might fail you, and you might die, but I shall not...                      |           \n                       ;           \n                       / \          \n                       |   |         \n               ||       /   \       ||\n                ||_      |   |      _||\n                 |  \__   |   |   __/  |\n                  |     \==|   |==/     |\n                   |__    __     __    __|\n                    .  \__  o     o  __/  .\n                     |     \___/ \___/     |\n                      |   __/  ||_||  \__   |\n                       |_/       `=`       \_|\n"
 
 ;*************************getCrash*********************************
 ;R0 holds the address of the rocks to crash into
