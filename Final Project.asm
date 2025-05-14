@@ -15,9 +15,7 @@ reset
     AND R4,R4,#0
     ADD R4,R4,#3 ;controls how many big loops go 
 MainLoop
-    AND R3,R3,#0
-    ; LD R2,roadLoopStart ;just before the loop starts i am using R2 to load the start position for the loop
-    ; ADD R3,R3,R2 ;keeps track of the loop count for road printing
+    AND R3,R3,#0 
     AND R1,R1,#0 ; resets which car i am calling
     
     JSR Clear
@@ -82,7 +80,6 @@ finishScene
     
 finish    Halt
 mainSaveR7 .BLKW 1
-roadLoopStart .fill #3
 
 
 ;**************************PrintFunction*********************************
